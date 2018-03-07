@@ -48,7 +48,7 @@ public class UserController {
 		return userService.register(user);
 	}
 
-	@RequestMapping(value = "get_user_info.do",method = RequestMethod.POST)
+	@RequestMapping(value = "get_user_info.do")
 	@ResponseBody
 	public ServerResponse<User> getUserInfo(HttpSession session){
 		User user = (User) session.getAttribute(Const.CURRENT_USER);
