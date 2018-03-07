@@ -2,7 +2,7 @@ package com.mmall.controller.backend;
 
 import com.mmall.common.Const;
 import com.mmall.common.ServerResponse;
-import com.mmall.common.ResultCode;
+import com.mmall.common.ResponseCode;
 import com.mmall.common.RoleEnum;
 import com.mmall.domain.User;
 import com.mmall.service.ICategoryService;
@@ -24,7 +24,7 @@ public class CategoryManageController {
 	private ServerResponse checkLoginAndRole(HttpSession session){
 		User user = (User) session.getAttribute(Const.CURRENT_USER);
 		if (user == null){
-			return ServerResponse.Failure(ResultCode.NEED_LOGIN.getCode(),"请登录后操作");
+			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode(),"请登录后操作");
 		}else if(!Objects.equals(user.getRole() , RoleEnum.ADMIN.getCode())){
 			return ServerResponse.Failure("没有权限");
 		}

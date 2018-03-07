@@ -4,112 +4,87 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 @Getter
 @Setter
 /**服务层统一返回*/
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)	//null的值不会被序列化
-public class ServerResponse<T> implements Serializable{
+public class ServerResponse<T> implements Serializable {
 
-	private static final long serialVersionUID = 672916116763084820L;
-
-	private int code;
-	private boolean success;
+	private int status;
 	private String msg;
 	private T data;
 
-	public ServerResponse() {
+	public ServerResponse(){
+
 	}
 
-	public static ServerResponse Success(){
-		ServerResponse ret = new ServerResponse();
-		ret.setSuccess(true);
-		ret.setCode(ResultCode.SUCCESS.getCode());
-		return ret;
+	private ServerResponse(int status){
+		this.status = status;
+	}
+	private ServerResponse(int status,T data){
+		this.status = status;
+		this.data = data;
 	}
 
-	public static ServerResponse Success(int code){
-		ServerResponse ret = new ServerResponse();
-		ret.setSuccess(true);
-		ret.setCode(code);
-		return ret;
+	private ServerResponse(int status,String msg,T data){
+		this.status = status;
+		this.msg = msg;
+		this.data = data;
+	}
+
+	private ServerResponse(int status,String msg){
+		this.status = status;
+		this.msg = msg;
+	}
+
+	@JsonIgnore
+	//使之不在json序列化结果当中
+	public boolean isSuccess(){
+		return this.status == ResponseCode.SUCCESS.getCode();
+	}
+
+	public int getStatus(){
+		return status;
+	}
+	public T getData(){
+		return data;
+	}
+	public String getMsg(){
+		return msg;
+	}
+
+
+	public static <T> ServerResponse<T> Success(){
+		return new ServerResponse<T>(ResponseCode.SUCCESS.getCode());
+	}
+
+	public static <T> ServerResponse<T> Success(String msg){
+		return new ServerResponse<T>(ResponseCode.SUCCESS.getCode(),msg);
 	}
 
 	public static <T> ServerResponse<T> Success(T data){
-		ServerResponse ret = new ServerResponse();
-		ret.setSuccess(true);
-		ret.setCode(ResultCode.SUCCESS.getCode());
-		ret.setData(data);
-		return ret;
+		return new ServerResponse<T>(ResponseCode.SUCCESS.getCode(),data);
 	}
 
-	public static <T> ServerResponse<T> Success(int code , T data){
-		ServerResponse ret = new ServerResponse();
-		ret.setSuccess(true);
-		ret.setCode(code);
-		ret.setData(data);
-		return ret;
+	public static <T> ServerResponse<T> Success(String msg,T data){
+		return new ServerResponse<T>(ResponseCode.SUCCESS.getCode(),msg,data);
 	}
 
-	public static <T> ServerResponse<T> Success(String msg , T data){
-		ServerResponse ret = new ServerResponse();
-		ret.setSuccess(true);
-		ret.setMsg(msg);
-		ret.setData(data);
-		return ret;
+
+	public static <T> ServerResponse<T> Failure(){
+		return new ServerResponse<T>(ResponseCode.FAILURE.getCode(),ResponseCode.FAILURE.getMsg());
 	}
 
-	public static <T> ServerResponse<T> Success(int code , String msg , T data){
-		ServerResponse ret = new ServerResponse();
-		ret.setSuccess(true);
-		ret.setCode(code);
-		ret.setMsg(msg);
-		ret.setData(data);
-		return ret;
+
+	public static <T> ServerResponse<T> Failure(String errorMessage){
+		return new ServerResponse<T>(ResponseCode.FAILURE.getCode(),errorMessage);
 	}
 
-	public static ServerResponse Failure(){
-		ServerResponse ret = new ServerResponse();
-		ret.setSuccess(false);
-		ret.setCode(ResultCode.FAILURE.getCode());
-		return ret;
-	}
-
-	public static ServerResponse Failure(String msg){
-		ServerResponse ret = new ServerResponse();
-		ret.setSuccess(false);
-		ret.setCode(ResultCode.FAILURE.getCode());
-		ret.setMsg(msg);
-		return ret;
-	}
-
-	public static ServerResponse Failure(int code){
-		ServerResponse ret = new ServerResponse();
-		ret.setSuccess(false);
-		ret.setCode(code);
-		return ret;
-	}
-
-	public static ServerResponse Failure(int code , String msg){
-		ServerResponse ret = new ServerResponse();
-		ret.setSuccess(false);
-		ret.setCode(code);
-		ret.setMsg(msg);
-		return ret;
-	}
-
-	public static <T> ServerResponse<T> Failure(int code , String msg , T data){
-		ServerResponse ret = new ServerResponse();
-		ret.setSuccess(false);
-		ret.setCode(code);
-		ret.setMsg(msg);
-		ret.setData(data);
-		return ret;
-	}
-
-	public boolean isSuccess(){
-		return success;
+	public static <T> ServerResponse<T> Failure(int errorCode,String errorMessage){
+		return new ServerResponse<T>(errorCode,errorMessage);
 	}
 	
 }

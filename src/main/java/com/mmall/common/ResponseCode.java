@@ -1,10 +1,9 @@
 package com.mmall.common;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-public enum  ResultCode {
+public enum ResponseCode {
 	SUCCESS(0 , "成功"),
 	FAILURE(1 , "失败"),
 	PARAM_ERROR(3 , "参数错误"),
@@ -14,7 +13,7 @@ public enum  ResultCode {
 	int code ;
 	String msg ;
 
-	ResultCode(int code, String msg) {
+	ResponseCode(int code, String msg) {
 		this.code = code;
 		this.msg = msg;
 	}

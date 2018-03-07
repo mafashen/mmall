@@ -1,7 +1,7 @@
 package com.mmall.service.impl;
 
 import com.mmall.common.Const;
-import com.mmall.common.ResultCode;
+import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.dao.CartMapper;
 import com.mmall.dao.ProductMapper;
@@ -30,7 +30,7 @@ public class CartServiceImpl implements ICartService {
 	@Override
 	public ServerResponse<CartVO> add(Integer userId, Integer productId, Integer count) {
 		if (userId == null || productId == null || count == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		com.mmall.domain.Cart cart = cartMapper.selectByUserIdProductId(userId, productId);
 		//购物车中已经存在此商品，修改数量
@@ -49,7 +49,7 @@ public class CartServiceImpl implements ICartService {
 	@Override
 	public ServerResponse<CartVO> update(Integer userId, Integer productId, Integer count) {
 		if (userId == null || productId == null ||  count == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		Cart cart = cartMapper.selectByUserIdProductId(userId, productId);
 		if (cart != null){
@@ -62,7 +62,7 @@ public class CartServiceImpl implements ICartService {
 	@Override
 	public ServerResponse<CartVO> deleteProduct(Integer userId, List<Integer> productIds) {
 		if (userId == null || productIds == null || productIds.isEmpty()){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		cartMapper.deleteByUserIdProductId(userId , productIds);
 		return list(userId);
@@ -76,7 +76,7 @@ public class CartServiceImpl implements ICartService {
 	@Override
 	public ServerResponse<CartVO> selectOrUnSelect(Integer userId, Integer productId, Integer checked) {
 		if (userId == null || productId == null || checked == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		cartMapper.setChecked(userId , productId , checked);
 		return list(userId);

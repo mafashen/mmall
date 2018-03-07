@@ -2,7 +2,7 @@ package com.mmall.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.mmall.common.Const;
-import com.mmall.common.ResultCode;
+import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.domain.Shipping;
 import com.mmall.domain.User;
@@ -25,7 +25,7 @@ public class ShippingController {
 	public ServerResponse add(HttpSession session , Shipping shipping){
 		User user = (User) session.getAttribute(Const.CURRENT_USER);
 		if (user == null){
-			return ServerResponse.Failure(ResultCode.NEED_LOGIN.getCode() , ResultCode.NEED_LOGIN.getMsg());
+			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode() , ResponseCode.NEED_LOGIN.getMsg());
 		}
 		return shippingService.add(user.getId() , shipping);
 	}
@@ -34,7 +34,7 @@ public class ShippingController {
 	public ServerResponse delete(HttpSession session , Shipping shipping){
 		User user = (User) session.getAttribute(Const.CURRENT_USER);
 		if (user == null){
-			return ServerResponse.Failure(ResultCode.NEED_LOGIN.getCode() , ResultCode.NEED_LOGIN.getMsg());
+			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode() , ResponseCode.NEED_LOGIN.getMsg());
 		}
 		return shippingService.update(user.getId() , shipping);
 	}
@@ -43,7 +43,7 @@ public class ShippingController {
 	public ServerResponse<Shipping> select(HttpSession session , Integer shippingId){
 		User user = (User) session.getAttribute(Const.CURRENT_USER);
 		if (user == null){
-			return ServerResponse.Failure(ResultCode.NEED_LOGIN.getCode() , ResultCode.NEED_LOGIN.getMsg());
+			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode() , ResponseCode.NEED_LOGIN.getMsg());
 		}
 		return shippingService.select(user.getId(), shippingId);
 	}
@@ -55,7 +55,7 @@ public class ShippingController {
 										 HttpSession session){
 		User user = (User)session.getAttribute(Const.CURRENT_USER);
 		if(user ==null){
-			return ServerResponse.Failure(ResultCode.NEED_LOGIN.getCode(),ResultCode.NEED_LOGIN.getMsg());
+			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getMsg());
 		}
 		return shippingService.list(user.getId(),pageNum,pageSize);
 	}

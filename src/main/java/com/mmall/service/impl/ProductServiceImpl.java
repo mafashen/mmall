@@ -4,7 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.mmall.common.Const;
-import com.mmall.common.ResultCode;
+import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.common.StatusEnum;
 import com.mmall.dao.ProductMapper;
@@ -56,7 +56,7 @@ public class ProductServiceImpl implements IProductService{
 	@Override
 	public ServerResponse<String> setSaleStatus(Integer productId, Integer status) {
 		if (productId == null || status == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		Product product = new Product();
 		product.setId(productId);
@@ -71,7 +71,7 @@ public class ProductServiceImpl implements IProductService{
 	@Override
 	public ServerResponse<ProductDetailVo> manageProductDetail(Integer productId) {
 		if(productId == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		Product product = productMapper.selectByPrimaryKey(productId);
 		if (product == null){
@@ -96,7 +96,7 @@ public class ProductServiceImpl implements IProductService{
 	@Override
 	public ServerResponse<PageInfo> searchProduct(String productName, Integer productId, int pageNum, int pageSize) {
 		if (StringUtils.isBlank(productName) && productId == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		PageHelper.startPage(pageNum , pageSize);
 		List<Product> products =  productMapper.selectByNameOrId("%"+productName+"%" , productId);
@@ -112,7 +112,7 @@ public class ProductServiceImpl implements IProductService{
 	@Override
 	public ServerResponse<ProductDetailVo> getProductDetail(Integer productId) {
 		if(productId == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		Product product = productMapper.selectByPrimaryKey(productId);
 		if (product == null || product.getStatus() != StatusEnum.ONLINE.getCode()){
@@ -124,7 +124,7 @@ public class ProductServiceImpl implements IProductService{
 	@Override
 	public ServerResponse<PageInfo> getProductByKeywordCategory(String keyword, Integer categoryId, int pageNum, int pageSize, String orderBy) {
 		if (StringUtils.isBlank(keyword) && categoryId == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		List<Integer> cats = new ArrayList<>();
 		if (categoryId != null){

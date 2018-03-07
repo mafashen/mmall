@@ -1,6 +1,6 @@
 package com.mmall.service.impl;
 
-import com.mmall.common.ResultCode;
+import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.dao.CategoryMapper;
 import com.mmall.domain.Category;
@@ -24,7 +24,7 @@ public class CategoryServiceImpl implements ICategoryService {
 	@Override
 	public ServerResponse addCategory(String categoryName, Integer parentId) {
 		if (StringUtils.isBlank(categoryName) || parentId == null || parentId < 0){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		Category category = new Category();
 		category.setName(categoryName);
@@ -40,7 +40,7 @@ public class CategoryServiceImpl implements ICategoryService {
 	@Override
 	public ServerResponse updateCategoryName(Integer categoryId, String categoryName) {
 		if (categoryId == null || StringUtils.isBlank(categoryName)){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		Category cat = new Category();
 		cat.setId(categoryId);
@@ -55,7 +55,7 @@ public class CategoryServiceImpl implements ICategoryService {
 	@Override
 	public ServerResponse<List<Category>> getChildrenParallelCategory(Integer categoryId) {
 		if (categoryId == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		List<Category> categories = categoryMapper.getChildren(categoryId);
 		if (categories == null || categories.isEmpty()){
@@ -67,7 +67,7 @@ public class CategoryServiceImpl implements ICategoryService {
 	@Override
 	public ServerResponse<List<Integer>> selectCategoryAndChildrenById(Integer categoryId) {
 		if (categoryId == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		Set<Integer> catIds = new HashSet<>();
 		findChildCat(categoryId, catIds);
@@ -95,7 +95,7 @@ public class CategoryServiceImpl implements ICategoryService {
 
 	public ServerResponse<Category> selectCategoryById(Integer categoryId){
 		if (categoryId == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		Category category = categoryMapper.selectByPrimaryKey(categoryId);
 		if (category != null){

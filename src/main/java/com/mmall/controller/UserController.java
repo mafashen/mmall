@@ -2,7 +2,7 @@ package com.mmall.controller;
 
 import com.mmall.common.Const;
 import com.mmall.common.ServerResponse;
-import com.mmall.common.ResultCode;
+import com.mmall.common.ResponseCode;
 import com.mmall.domain.User;
 import com.mmall.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +64,7 @@ public class UserController {
 	public ServerResponse<String> forgetGetQuestion(HttpSession session , String username){
 		User user = (User) session.getAttribute(Const.CURRENT_USER);
 		if (user == null){
-			return ServerResponse.Failure(ResultCode.NEED_LOGIN.getCode(),"请登录后操作");
+			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode(),"请登录后操作");
 		}
 		return userService.selectQuestion(user.getUsername());
 	}
@@ -118,7 +118,7 @@ public class UserController {
 	public ServerResponse<User> get_information(HttpSession session){
 		User currentUser = (User)session.getAttribute(Const.CURRENT_USER);
 		if(currentUser == null){
-			return ServerResponse.Failure(ResultCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
+			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
 		}
 		return userService.getInformation(currentUser.getId());
 	}

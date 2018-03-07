@@ -1,5 +1,6 @@
 package com.mmall.service.impl;
 
+import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.common.RoleEnum;
 import com.mmall.common.TokenCache;
@@ -147,7 +148,7 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public ServerResponse checkAdminRole(User user) {
 		ServerResponse ServerResponse = new ServerResponse();
-		ServerResponse.setSuccess(Objects.equals(RoleEnum.ADMIN.getCode(), user.getRole()));
+		ServerResponse.setStatus(Objects.equals(RoleEnum.ADMIN.getCode(), user.getRole()) ? ResponseCode.SUCCESS.getCode() : ResponseCode.FAILURE.getCode());
 		return ServerResponse;
 	}
 }

@@ -2,7 +2,7 @@ package com.mmall.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.mmall.common.ResultCode;
+import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.dao.ShippingMapper;
 import com.mmall.domain.Shipping;
@@ -24,7 +24,7 @@ public class ShippingServiceImpl implements IShippingService {
 	@Override
 	public ServerResponse add(Integer userId, Shipping shipping) {
 		if (userId == null || shipping == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		shipping.setUserId(userId);
 		int insert = shippingMapper.insert(shipping);
@@ -39,7 +39,7 @@ public class ShippingServiceImpl implements IShippingService {
 	@Override
 	public ServerResponse<String> del(Integer userId, Integer shippingId) {
 		if (userId == null || shippingId == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		int del = shippingMapper.deleteByUserIdAndKey(userId, shippingId);
 		if (del > 0){
@@ -51,7 +51,7 @@ public class ShippingServiceImpl implements IShippingService {
 	@Override
 	public ServerResponse update(Integer userId, Shipping shipping) {
 		if (userId == null || shipping == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		int update = shippingMapper.updateByPrimaryKeySelective(shipping);
 		if (update > 0){
@@ -63,7 +63,7 @@ public class ShippingServiceImpl implements IShippingService {
 	@Override
 	public ServerResponse<Shipping> select(Integer userId, Integer shippingId) {
 		if (userId == null || shippingId == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		Shipping shipping = shippingMapper.selectByPrimaryKey(userId, shippingId);
 		if (shipping != null){
@@ -75,7 +75,7 @@ public class ShippingServiceImpl implements IShippingService {
 	@Override
 	public ServerResponse<PageInfo> list(Integer userId, int pageNum, int pageSize) {
 		if (userId == null ){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		PageHelper.startPage(pageNum, pageSize);
 		List<Shipping> shippings = shippingMapper.selectByUserId(userId);

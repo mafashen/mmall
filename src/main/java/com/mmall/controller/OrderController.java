@@ -4,19 +4,16 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.demo.trade.config.Configs;
 import com.mmall.common.Const;
-import com.mmall.common.ResultCode;
+import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
-import com.mmall.domain.Shipping;
 import com.mmall.domain.User;
 import com.mmall.service.IOrderService;
 import com.mmall.vo.OrderVO;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +34,7 @@ public class OrderController {
 	public ServerResponse pay(HttpSession session, Long orderNo, HttpServletRequest request){
 		User user = (User)session.getAttribute(Const.CURRENT_USER);
 		if(user ==null){
-			return ServerResponse.Failure(ResultCode.NEED_LOGIN.getCode(),ResultCode.NEED_LOGIN.getMsg());
+			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getMsg());
 		}
 		String path = request.getSession().getServletContext().getRealPath("upload");
 		return orderService.pay(orderNo,user.getId(),path);
@@ -99,7 +96,7 @@ public class OrderController {
 	public ServerResponse<Boolean> QueryOrderPayStatus(Long orderNo , HttpSession session){
 		User user = (User)session.getAttribute(Const.CURRENT_USER);
 		if(user ==null){
-			return ServerResponse.Failure(ResultCode.NEED_LOGIN.getCode(),ResultCode.NEED_LOGIN.getMsg());
+			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getMsg());
 		}
 		return ServerResponse.Success(orderService.queryOrderPayStatus(user.getId() , orderNo).isSuccess());
 	}
@@ -108,7 +105,7 @@ public class OrderController {
 	public ServerResponse<OrderVO> createOrder(HttpSession session , Integer shippingId){
 		User user = (User)session.getAttribute(Const.CURRENT_USER);
 		if(user ==null){
-			return ServerResponse.Failure(ResultCode.NEED_LOGIN.getCode(),ResultCode.NEED_LOGIN.getMsg());
+			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getMsg());
 		}
 		return orderService.createOrder(user.getId(), shippingId);
 	}
@@ -117,7 +114,7 @@ public class OrderController {
 	public ServerResponse<String> cancelOrder(HttpSession session , Long orderNo){
 		User user = (User)session.getAttribute(Const.CURRENT_USER);
 		if(user ==null){
-			return ServerResponse.Failure(ResultCode.NEED_LOGIN.getCode(),ResultCode.NEED_LOGIN.getMsg());
+			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getMsg());
 		}
 		return orderService.cancel(user.getId(), orderNo);
 	}
@@ -126,7 +123,7 @@ public class OrderController {
 	public ServerResponse getOrderCartProduct(HttpSession session){
 		User user = (User)session.getAttribute(Const.CURRENT_USER);
 		if(user ==null){
-			return ServerResponse.Failure(ResultCode.NEED_LOGIN.getCode(),ResultCode.NEED_LOGIN.getMsg());
+			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getMsg());
 		}
 		return orderService.getOrderCartProduct(user.getId());
 	}
@@ -135,7 +132,7 @@ public class OrderController {
 	public ServerResponse getDetail(HttpSession session , Long orderNo){
 		User user = (User)session.getAttribute(Const.CURRENT_USER);
 		if(user ==null){
-			return ServerResponse.Failure(ResultCode.NEED_LOGIN.getCode(),ResultCode.NEED_LOGIN.getMsg());
+			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getMsg());
 		}
 		return orderService.getOrderDetail(user.getId() , orderNo);
 	}
@@ -144,7 +141,7 @@ public class OrderController {
 	public ServerResponse list(HttpSession session , @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
 		User user = (User)session.getAttribute(Const.CURRENT_USER);
 		if(user ==null){
-			return ServerResponse.Failure(ResultCode.NEED_LOGIN.getCode(),ResultCode.NEED_LOGIN.getMsg());
+			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getMsg());
 		}
 		return orderService.getOrderList(user.getId() , pageNum , pageSize);
 	}

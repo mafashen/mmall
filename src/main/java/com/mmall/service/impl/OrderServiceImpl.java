@@ -15,7 +15,7 @@ import com.github.pagehelper.PageInfo;
 import com.mmall.common.Const;
 import com.mmall.common.OrderStatusEnum;
 import com.mmall.common.PayPlatformEnum;
-import com.mmall.common.ResultCode;
+import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.common.StatusEnum;
 import com.mmall.dao.CartMapper;
@@ -33,14 +33,12 @@ import com.mmall.domain.Shipping;
 import com.mmall.service.IOrderService;
 import com.mmall.util.BigDecimalUtil;
 import com.mmall.util.DateTimeUtil;
-import com.mmall.util.FTPUtil;
 import com.mmall.util.PropertiesUtil;
 import com.mmall.vo.OrderItemVO;
 import com.mmall.vo.OrderProductVO;
 import com.mmall.vo.OrderVO;
 import com.mmall.vo.ShippingVO;
 import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -107,7 +105,7 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	public ServerResponse pay(Long orderNo, Integer userId, String path) {
 		if (orderNo == null || userId == null || path == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		Order order = orderMapper.selectByUserIdAndOrderNo(userId, orderNo);
 		if (order == null){
@@ -280,7 +278,7 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	public ServerResponse queryOrderPayStatus(Integer userId, Long orderNo){
 		if (orderNo == null || userId == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		Order order = orderMapper.selectByUserIdAndOrderNo(userId, orderNo);
 		if (order == null){
@@ -292,7 +290,7 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	public ServerResponse createOrder(Integer userId, Integer shippingId) {
 		if (userId == null || shippingId == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		//计算购物车中checked总价 , 检查商品状态
 		final List<Cart> carts = cartMapper.selectByUserIdAndChecked(userId);
@@ -431,7 +429,7 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	public ServerResponse<String> cancel(Integer userId, Long orderNo) {
 		if (userId == null || orderNo == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		Order order = orderMapper.selectByUserIdAndOrderNo(userId, orderNo);
 		if (order == null){
@@ -448,7 +446,7 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	public ServerResponse getOrderCartProduct(Integer userId) {
 		if (userId == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		List<Cart> carts = cartMapper.selectByUserIdAndChecked(userId);
 		ServerResponse cartOrderItemRet = getCartOrderItem(userId, carts);
@@ -472,7 +470,7 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	public ServerResponse<OrderVO> getOrderDetail(Integer userId, Long orderNo) {
 		if (userId == null || orderNo == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		Order order = orderMapper.selectByUserIdAndOrderNo(userId, orderNo);
 		if (order != null){
@@ -485,7 +483,7 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	public ServerResponse<PageInfo> getOrderList(Integer userId, int pageNum, int pageSize) {
 		if (userId == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		List<Order> orders = orderMapper.selectByUserId(userId);
 		PageHelper.startPage(pageNum, pageSize);
@@ -524,7 +522,7 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	public ServerResponse<OrderVO> manageDetail(Long orderNo) {
 		if(orderNo == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		Order order = orderMapper.selectByOrderNo(orderNo);
 		if (order != null){
@@ -537,7 +535,7 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	public ServerResponse<PageInfo> manageSearch(Long orderNo, int pageNum, int pageSize) {
 		if(orderNo == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		Order order = orderMapper.selectByOrderNo(orderNo);
 		if (order != null){
@@ -555,7 +553,7 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	public ServerResponse<String> manageSendGoods(Long orderNo) {
 		if(orderNo == null){
-			return ServerResponse.Failure(ResultCode.PARAM_ERROR.getCode() , ResultCode.PARAM_ERROR.getMsg());
+			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		Order order = orderMapper.selectByOrderNo(orderNo);
 		if (order != null){

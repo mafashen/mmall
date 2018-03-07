@@ -25,7 +25,7 @@ public class HttpResult<T> implements Serializable{
 	public static HttpResult Success(){
 		HttpResult ret = new HttpResult();
 		ret.setStatus(true);
-		ret.setCode(ResultCode.SUCCESS.getCode());
+		ret.setCode(ResponseCode.SUCCESS.getCode());
 		return ret;
 	}
 
@@ -39,7 +39,7 @@ public class HttpResult<T> implements Serializable{
 	public static <T> HttpResult<T> Success(T data){
 		HttpResult ret = new HttpResult();
 		ret.setStatus(true);
-		ret.setCode(ResultCode.SUCCESS.getCode());
+		ret.setCode(ResponseCode.SUCCESS.getCode());
 		ret.setData(data);
 		return ret;
 	}
@@ -64,14 +64,14 @@ public class HttpResult<T> implements Serializable{
 	public static HttpResult Failure(){
 		HttpResult ret = new HttpResult();
 		ret.setStatus(false);
-		ret.setCode(ResultCode.FAILURE.getCode());
+		ret.setCode(ResponseCode.FAILURE.getCode());
 		return ret;
 	}
 
 	public static HttpResult Failure(String msg){
 		HttpResult ret = new HttpResult();
 		ret.setStatus(false);
-		ret.setCode(ResultCode.FAILURE.getCode());
+		ret.setCode(ResponseCode.FAILURE.getCode());
 		ret.setMsg(msg);
 		return ret;
 	}
@@ -107,7 +107,7 @@ public class HttpResult<T> implements Serializable{
 	public static HttpResult convert(ServerResponse ret){
 		HttpResult httpResult = new HttpResult();
 		httpResult.setMsg(ret.getMsg());
-		httpResult.setCode(ret.getCode());
+		httpResult.setCode(ret.getStatus());
 		httpResult.setData(ret.getData());
 		httpResult.setStatus(ret.isSuccess());
 		return httpResult;
