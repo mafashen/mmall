@@ -38,12 +38,12 @@
 
     <!--<bean id="crosIntercept" class="com.mmall.util.CorsIntercept" />-->
 
-    <mvc:interceptors>
-        <mvc:interceptor>
-            <mvc:mapping path="/**"/>
-            <bean class="com.mmall.util.CorsIntercept" />
-        </mvc:interceptor>
-    </mvc:interceptors>
+    <!--<mvc:interceptors>-->
+        <!--<mvc:interceptor>-->
+            <!--<mvc:mapping path="/**"/>-->
+            <!--<bean class="com.mmall.util.CorsIntercept" />-->
+        <!--</mvc:interceptor>-->
+    <!--</mvc:interceptors>-->
     
     <mvc:resources mapping="/*.html" location="/**" />
 </beans>
