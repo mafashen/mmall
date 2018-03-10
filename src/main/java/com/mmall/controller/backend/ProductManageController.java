@@ -112,7 +112,7 @@ public class ProductManageController {
 	@RequestMapping("upload.do")
 	@ResponseBody
 	public ServerResponse productUpload(HttpSession session,
-										@RequestParam("file") MultipartFile file){
+										@RequestParam("upload_file") MultipartFile file){
 		ServerResponse loginRet = checkLoginAndRole(session);
 		if (!loginRet.isSuccess()){
 			return loginRet;
