@@ -62,11 +62,7 @@ public class UserController {
 	@RequestMapping(value = "forget_get_question.do",method = RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse<String> forgetGetQuestion(HttpSession session , String username){
-		User user = (User) session.getAttribute(Const.CURRENT_USER);
-		if (user == null){
-			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode(),"请登录后操作");
-		}
-		return userService.selectQuestion(user.getUsername());
+		return userService.selectQuestion(username);
 	}
 
 

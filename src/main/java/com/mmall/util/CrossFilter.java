@@ -16,7 +16,6 @@ public class CrossFilter implements Filter {
 
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 		HttpServletResponse response= (HttpServletResponse) servletResponse;
-		String origin= servletRequest.getRemoteHost()+":"+servletRequest.getRemotePort();
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.setHeader("Access-Control-Allow-Headers", "Authentication");
         response.setHeader("Access-Control-Allow-Methods","POST,GET,OPTIONS,DELETE");

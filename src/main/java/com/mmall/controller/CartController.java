@@ -103,7 +103,7 @@ public class CartController {
 	public ServerResponse<Integer> getCartProductCount(HttpSession session){
 		User user = (User) session.getAttribute(Const.CURRENT_USER);
 		if (user == null){
-			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode() , ResponseCode.NEED_LOGIN.getMsg());
+			return ServerResponse.Success(0);
 		}
 		return cartService.getCartProductCount(user.getId());
 	}

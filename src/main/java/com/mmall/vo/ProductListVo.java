@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 public class ProductListVo implements Serializable{
 
+	private Integer id;
 	private Integer categoryId;
 	private String categoryStr;
 

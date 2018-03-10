@@ -15,9 +15,9 @@ public class FileUtil {
 		String originalFilename = file.getOriginalFilename();
 		//获取后缀名
 		String extension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
-		String newFileName = UUID.randomUUID().toString() + extension;
+		String newFileName = UUID.randomUUID().toString() + "." + extension;
 		File dir = new File(path);
-		if (dir.exists()){
+		if (!dir.exists()){
 			dir.canWrite();
 			dir.mkdirs();
 		}
@@ -30,7 +30,8 @@ public class FileUtil {
 			//上传至FTP服务器
 			FTPUtil.upload2FTP(Arrays.asList(uploadFile));
 			//删除上传的临时文件
-			uploadFile.delete();
+			boolean delete = uploadFile.delete();
+			logger.warn("删除本地文件{}", delete ? "Success" : "Failed");
 		}catch (Exception e){
 			logger.error("上传文件异常",e);
 			return null;

@@ -7,7 +7,7 @@ public enum ResponseCode {
 	SUCCESS(0 , "成功"),
 	FAILURE(1 , "失败"),
 	PARAM_ERROR(3 , "参数错误"),
-	NEED_LOGIN(4 , "需要登录"),
+	NEED_LOGIN(10 , "需要登录"),
 	;
 
 	int code ;

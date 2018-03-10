@@ -24,6 +24,7 @@ public class FTPUtil {
 	}
 
 	private static boolean upload(List<File> fileList , String remotePath) throws IOException {
+		boolean result = false;
 		FTPClient ftpClient = new FTPClient();
 		FileInputStream fis = null;
 		try {
@@ -31,27 +32,31 @@ public class FTPUtil {
 
 			for (File file : fileList) {
 				fis = new FileInputStream(file);
-				ftpClient.storeFile(remotePath , fis);
+				logger.warn("开始上传至ftp服务器...");
+				result = ftpClient.storeFile(file.getName() , fis);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}finally {
-			fis.close();
+			if (fis != null){
+				fis.close();
+			}
 			ftpClient.disconnect();
 		}
-		return false;
+		return result;
 	}
 
 	private static void connect(String remotePath, FTPClient ftpClient) throws IOException {
 		ftpClient.connect(ftpIp);
 		ftpClient.login(ftpUser, ftpPass);
-
+		logger.warn("登陆ftp服务器...");
 		ftpClient.setBufferSize(1024);
 		ftpClient.setControlEncoding("utf-8");
 		//更换工作目录
 		ftpClient.changeWorkingDirectory(remotePath);
-		//设置文件烈性
+		//设置文件属性
 		ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
+//		ftpClient.enterLocalPassiveMode();
 		ftpClient.enterLocalActiveMode();
 	}
 }

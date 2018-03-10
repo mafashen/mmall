@@ -28,11 +28,11 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
-  <select id="selectProductList" resultType="com.mmall.domain.Product">
+  <select id="selectProductList" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" /> from mmall_product ORDER BY id DESC
   </select>
 
-  <select id="selectByNameOrId" resultType="com.mmall.domain.Product">
+  <select id="selectByNameOrId" resultMap="BaseResultMap">
     select
       <include refid="Base_Column_List" />  from mmall_product
     <where>
@@ -45,7 +45,7 @@
     </where>
   </select>
 
-  <select id="selectByNameAndCatId" resultType="com.mmall.domain.Product">
+  <select id="selectByNameAndCatId" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" /> from mmall_product
     where status = 1
     <if test="name != null">
