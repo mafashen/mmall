@@ -53,6 +53,7 @@ public class ShippingServiceImpl implements IShippingService {
 		if (userId == null || shipping == null){
 			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
+		shipping.setUserId(userId);
 		int update = shippingMapper.updateByPrimaryKeySelective(shipping);
 		if (update > 0){
 			return ServerResponse.Success("更新收货地址成功");
