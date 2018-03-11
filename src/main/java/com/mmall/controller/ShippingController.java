@@ -30,6 +30,16 @@ public class ShippingController {
 		return shippingService.add(user.getId() , shipping);
 	}
 
+	@RequestMapping("update.do")
+	@ResponseBody
+	public ServerResponse update(HttpSession session,Shipping shipping){
+		User user = (User)session.getAttribute(Const.CURRENT_USER);
+		if(user ==null){
+			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getMsg());
+		}
+		return shippingService.update(user.getId(),shipping);
+	}
+
 	@RequestMapping("del.do")
 	public ServerResponse delete(HttpSession session , Shipping shipping){
 		User user = (User) session.getAttribute(Const.CURRENT_USER);
