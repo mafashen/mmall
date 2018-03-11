@@ -41,12 +41,12 @@ public class ShippingController {
 	}
 
 	@RequestMapping("del.do")
-	public ServerResponse delete(HttpSession session , Shipping shipping){
+	public ServerResponse delete(HttpSession session , Integer shippingId){
 		User user = (User) session.getAttribute(Const.CURRENT_USER);
 		if (user == null){
 			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode() , ResponseCode.NEED_LOGIN.getMsg());
 		}
-		return shippingService.update(user.getId() , shipping);
+		return shippingService.del(user.getId() , shippingId);
 	}
 
 	@RequestMapping("select.do")
