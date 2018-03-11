@@ -485,8 +485,8 @@ public class OrderServiceImpl implements IOrderService {
 		if (userId == null){
 			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
-		List<Order> orders = orderMapper.selectByUserId(userId);
 		PageHelper.startPage(pageNum, pageSize);
+		List<Order> orders = orderMapper.selectByUserId(userId);
 		PageInfo pageInfo = new PageInfo(orders);
 		pageInfo.setList(assemblingOrderVOList(userId , orders));
 		return ServerResponse.Success(pageInfo);
