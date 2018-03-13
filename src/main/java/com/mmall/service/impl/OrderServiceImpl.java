@@ -12,6 +12,7 @@ import com.alipay.demo.trade.service.impl.AlipayTradeServiceImpl;
 import com.alipay.demo.trade.utils.ZxingUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.mmall.common.Const;
 import com.mmall.common.OrderStatusEnum;
 import com.mmall.common.PayPlatformEnum;
@@ -33,6 +34,7 @@ import com.mmall.domain.Shipping;
 import com.mmall.service.IOrderService;
 import com.mmall.util.BigDecimalUtil;
 import com.mmall.util.DateTimeUtil;
+import com.mmall.util.FTPUtil;
 import com.mmall.util.PropertiesUtil;
 import com.mmall.vo.OrderItemVO;
 import com.mmall.vo.OrderProductVO;
@@ -197,7 +199,7 @@ public class OrderServiceImpl implements IOrderService {
 				//上传二维码至FTP服务器
 				File targetFile = new File(path,qrFileName);
 				try {
-					//FTPUtil.upload2FTP(Lists.newArrayList(targetFile));
+					FTPUtil.upload2FTP(Lists.newArrayList(targetFile));
 				} catch (Exception e) {
 					logger.error("上传二维码异常",e);
 				}
