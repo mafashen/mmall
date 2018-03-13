@@ -351,10 +351,10 @@ public class OrderServiceImpl implements IOrderService {
 		orderVO.setPayment(order.getPayment());
 		orderVO.setPostage(order.getPostage());
 		orderVO.setShippingId(order.getShippingId());
-		orderVO.setPaymentType(Const.PaymentTypeEnum.ONLINE_PAY.getCode());
-		orderVO.setPaymentTypeDesc(Const.PaymentTypeEnum.ONLINE_PAY.getValue());
-		orderVO.setStatus(Const.OrderStatusEnum.NO_PAY.getCode());
-		orderVO.setStatusDesc(Const.OrderStatusEnum.NO_PAY.getValue());
+		orderVO.setPaymentType(order.getPaymentType());
+		orderVO.setPaymentTypeDesc(Const.PaymentTypeEnum.codeOf(order.getPaymentType()).getValue());
+		orderVO.setStatus(order.getStatus());
+		orderVO.setStatusDesc(Const.OrderStatusEnum.codeOf(order.getStatus()).getValue());
 		orderVO.setPaymentTime(DateTimeUtil.dateToStr(order.getPaymentTime()));
 		orderVO.setSendTime(DateTimeUtil.dateToStr(order.getSendTime()));
 		orderVO.setEndTime(DateTimeUtil.dateToStr(order.getEndTime()));
