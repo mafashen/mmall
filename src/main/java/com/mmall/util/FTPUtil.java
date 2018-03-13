@@ -56,7 +56,7 @@ public class FTPUtil {
 		ftpClient.changeWorkingDirectory(remotePath);
 		//设置文件属性
 		ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
-//		ftpClient.enterLocalPassiveMode();
-		ftpClient.enterLocalActiveMode();
+		ftpClient.enterLocalPassiveMode();
+//		ftpClient.enterLocalActiveMode();
 	}
 }
