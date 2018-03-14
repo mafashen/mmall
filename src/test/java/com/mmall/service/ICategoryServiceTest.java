@@ -1,5 +1,7 @@
 package com.mmall.service;
 
+import com.mmall.common.ServerResponse;
+import com.mmall.domain.Category;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,13 @@ public class ICategoryServiceTest extends BaseTest{
 		Assert.assertEquals(0 ,categoryService.selectCategoryAndChildrenById(1).getData().size());
 
 		Assert.assertEquals( 6 ,categoryService.selectCategoryAndChildrenById(100001).getData().size());
+	}
+
+	@Test
+	public void getFullCategory(){
+		ServerResponse<Category> ret = categoryService.getFullCategory(0);
+		Assert.assertTrue(ret.isSuccess());
+		System.out.println(ret.getData());
 	}
 
 }

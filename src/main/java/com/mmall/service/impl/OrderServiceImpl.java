@@ -252,7 +252,7 @@ public class OrderServiceImpl implements IOrderService {
 					if (totalAmount == null || BigDecimalUtil.sub(order.getPayment().doubleValue() , Double.parseDouble(totalAmount)).doubleValue() != 0D){
 						return ServerResponse.Failure("交易金额不一致");
 					}
-					if (Const.AlipayCallback.RESPONSE_SUCCESS.equals(tradeStatus)){
+					if (Const.AlipayCallback.TRADE_STATUS_TRADE_SUCCESS.equals(tradeStatus)){
 						//已经支付,更新订单状态
 						order.setPaymentTime(DateTimeUtil.strToDate(params.get("gmt_payment")));
 						order.setStatus(OrderStatusEnum.PAID.getCode());

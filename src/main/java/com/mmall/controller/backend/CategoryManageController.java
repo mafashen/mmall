@@ -64,7 +64,7 @@ public class CategoryManageController {
 		}
 	}
 
-		@RequestMapping("get_deep_category.do")
+	@RequestMapping("get_deep_category.do")
 	@ResponseBody
 	public ServerResponse getCategoryAndDeepChildrenCategory(HttpSession session, @RequestParam(value = "categoryId", defaultValue = "0") Integer categoryId) {
 		ServerResponse check = checkLoginAndRole(session);

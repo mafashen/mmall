@@ -8,6 +8,7 @@ import com.mmall.service.ICategoryService;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,5 +103,31 @@ public class CategoryServiceImpl implements ICategoryService {
 			return ServerResponse.Success(category);
 		}
 		return ServerResponse.Failure("类目不存在");
+	}
+
+	@Override
+	public ServerResponse<Category> getFullCategory(Integer catId){
+		Category category = new Category();
+		ServerResponse<List<Category>> ret = getChildrenParallelCategory(catId);
+		if (ret.isSuccess() && ret.getData() != null){
+			List<Category> data = ret.getData();
+			for (Category cat : data) {
+				findChildCat(cat);
+			}
+			category.setChildren(data);
+		}
+		return ServerResponse.Success(category);
+	}
+
+	private void findChildCat(Category category) {
+
+		//递归找出子节点
+		List<Category> children = categoryMapper.getChildren(category.getId());
+		if (children != null && !children.isEmpty()){
+			category.setChildren(children);
+			for (Category child : children) {
+				findChildCat(child);
+			}
+		}
 	}
 }
