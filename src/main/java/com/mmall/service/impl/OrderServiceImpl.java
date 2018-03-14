@@ -286,7 +286,7 @@ public class OrderServiceImpl implements IOrderService {
 		if (order == null){
 			return ServerResponse.Failure("没有查询到该用户对应的订单:"+orderNo);
 		}
-		return order.getStatus() > OrderStatusEnum.PAID.getCode() ? ServerResponse.Success() : ServerResponse.Failure();
+		return order.getStatus() >= OrderStatusEnum.PAID.getCode() ? ServerResponse.Success() : ServerResponse.Failure();
 	}
 
 	@Override
