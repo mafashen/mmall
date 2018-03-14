@@ -2,12 +2,13 @@ package com.mmall.domain;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class Product {
     private Integer id;
 
-    @NotBlank
+    @NotNull
     private Integer categoryId;
 
     @NotBlank
