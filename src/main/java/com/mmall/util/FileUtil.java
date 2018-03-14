@@ -28,14 +28,17 @@ public class FileUtil {
 			//上传至应用服务器
 			file.transferTo(uploadFile);
 			//上传至FTP服务器
-			FTPUtil.upload2FTP(Arrays.asList(uploadFile));
+			boolean result = FTPUtil.upload2FTP(Arrays.asList(uploadFile));
 			//删除上传的临时文件
 			boolean delete = uploadFile.delete();
+			if (result){
+				return uploadFile.getName();
+			}
 			logger.warn("删除本地文件{}", delete ? "Success" : "Failed");
 		}catch (Exception e){
 			logger.error("上传文件异常",e);
 			return null;
 		}
-		return uploadFile.getName();
+		return null;
 	}
 }

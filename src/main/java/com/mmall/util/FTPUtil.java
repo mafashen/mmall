@@ -17,10 +17,11 @@ public class FTPUtil {
 	private static String ftpPass = PropertiesUtil.getProperty("ftp.pass");
 	private static int port = 21;
 
-	public static void upload2FTP(List<File> files) throws IOException {
+	public static boolean upload2FTP(List<File> files) throws IOException {
 		logger.warn("开始连接ftp服务器...");
 		boolean ret = upload(files , "img");
 		logger.warn("上传文件完成，上传结果：{}" , ret ? "Success" : "Failed");
+		return ret;
 	}
 
 	private static boolean upload(List<File> fileList , String remotePath) throws IOException {
@@ -56,7 +57,7 @@ public class FTPUtil {
 		ftpClient.changeWorkingDirectory(remotePath);
 		//设置文件属性
 		ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
-		ftpClient.enterLocalPassiveMode();
-//		ftpClient.enterLocalActiveMode();
+//		ftpClient.enterLocalPassiveMode();
+		ftpClient.enterLocalActiveMode();
 	}
 }

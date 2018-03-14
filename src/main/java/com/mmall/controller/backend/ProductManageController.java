@@ -119,12 +119,16 @@ public class ProductManageController {
 		}else{
 			String path = session.getServletContext().getRealPath("upload");
 			String uploadFileName = FileUtil.upload(file, path);
-			String url = PropertiesUtil.getProperty("ftp.server.http.prefix") + uploadFileName;
+			if (StringUtils.isNotBlank(uploadFileName)){
+				String url = PropertiesUtil.getProperty("ftp.server.http.prefix") + uploadFileName;
 
-			Map fileMap = Maps.newHashMap();
-			fileMap.put("uri",uploadFileName);
-			fileMap.put("url",url);
-			return ServerResponse.Success(fileMap);
+				Map fileMap = Maps.newHashMap();
+				fileMap.put("uri",uploadFileName);
+				fileMap.put("url",url);
+				return ServerResponse.Success(fileMap);
+			}else{
+				return ServerResponse.Failure("上传失败");
+			}
 		}
 	}
 
