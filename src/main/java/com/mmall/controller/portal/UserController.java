@@ -1,15 +1,14 @@
 package com.mmall.controller.portal;
 
-import com.mmall.common.Const;
 import com.mmall.common.ServerResponse;
 import com.mmall.common.ResponseCode;
 import com.mmall.domain.User;
 import com.mmall.service.IUserService;
 import com.mmall.util.CookieUtil;
 import com.mmall.util.KvCacheManage;
+import com.mmall.util.SessionUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +30,8 @@ public class UserController {
 	private IUserService userService;
 	@Autowired
 	private KvCacheManage kvCacheManage;
+	@Autowired
+	private SessionUtil sessionUtil;
 
 	@RequestMapping(value = "/login.do")
 	public ServerResponse<User> login(@RequestParam("username") String username ,
@@ -39,17 +40,18 @@ public class UserController {
 		ServerResponse<User> ret = userService.login(username, password);
 		if (ret.isSuccess()){
 //			session.setAttribute(Const.CURRENT_USER , ret.getData());
-			CookieUtil.setLoginCookie(response , session.getId());
+			sessionUtil.setLoginCookie(response , session.getId());
 			kvCacheManage.setObject(session.getId() , ret.getData() , LOGIN_EXPIRE);
 		}
 		return ret;
 	}
 
 	@RequestMapping("/logout.do")
-	public ServerResponse logout(HttpServletResponse response , HttpSession session){
+	public ServerResponse logout(HttpServletRequest request , HttpServletResponse response){
 //		session.removeAttribute(Const.CURRENT_USER);
-		kvCacheManage.del(session.getId());
-		CookieUtil.deleteLoginCookie(response);
+		String loginToken = sessionUtil.getLoginCookie(request);
+		kvCacheManage.del(loginToken);
+		sessionUtil.deleteLoginCookie(response);
 		return ServerResponse.Success();
 	}
 
@@ -65,7 +67,7 @@ public class UserController {
 	@ResponseBody
 	public ServerResponse<User> getUserInfo(HttpSession session , HttpServletRequest request){
 //		User user = (User) session.getAttribute(Const.CURRENT_USER);
-		User user = checkLogin(request);
+		User user = sessionUtil.checkLogin(request);
 		if (user != null){
 			return ServerResponse.Success(user);
 		}
@@ -98,7 +100,7 @@ public class UserController {
 	@RequestMapping(value = "reset_password.do",method = RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse<String> resetPassword(HttpServletRequest request,String passwordOld,String passwordNew){
-		User user = checkLogin(request);
+		User user = sessionUtil.checkLogin(request);
 		if(user == null){
 			return ServerResponse.Failure("用户未登录");
 		}
@@ -109,7 +111,7 @@ public class UserController {
 	@RequestMapping(value = "update_information.do",method = RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse<User> update_information(HttpServletRequest request,User user){
-		User currentUser = checkLogin(request);
+		User currentUser = sessionUtil.checkLogin(request);
 		String loginCookie = CookieUtil.getLoginCookie(request);
 		if(currentUser == null){
 			return ServerResponse.Failure("用户未登录");
@@ -128,21 +130,10 @@ public class UserController {
 	@RequestMapping(value = "get_information.do",method = RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse<User> get_information(HttpServletRequest request){
-		User currentUser = checkLogin(request);
+		User currentUser = sessionUtil.checkLogin(request);
 		if(currentUser == null){
 			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
 		}
 		return userService.getInformation(currentUser.getId());
-	}
-
-	private User checkLogin(HttpServletRequest request){
-		String loginCookie = CookieUtil.getLoginCookie(request);
-		if (StringUtils.isNotBlank(loginCookie)){
-			User user = kvCacheManage.getObject(loginCookie, User.class);
-			if(user != null){
-				return user;
-			}
-		}
-		return null;
 	}
 }

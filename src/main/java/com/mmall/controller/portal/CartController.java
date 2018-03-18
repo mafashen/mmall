@@ -6,9 +6,11 @@ import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.domain.User;
 import com.mmall.service.ICartService;
+import com.mmall.util.CookieUtil;
 import com.mmall.vo.CartVO;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,10 +23,12 @@ public class CartController {
 
 	@Autowired
 	private ICartService cartService;
+	@Autowired
+	private CookieUtil cookieUtil;
 
 	@RequestMapping("/list.do")
-	public ServerResponse<CartVO> list(HttpSession session){
-		User user = (User) session.getAttribute(Const.CURRENT_USER);
+	public ServerResponse<CartVO> list(HttpServletRequest request){
+		User user = cookieUtil.checkLogin(request);
 		if (user == null){
 			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode() , ResponseCode.NEED_LOGIN.getMsg());
 		}
@@ -32,8 +36,8 @@ public class CartController {
 	}
 
 	@RequestMapping("/add.do")
-	public ServerResponse<CartVO> add(HttpSession session , @RequestParam("productId") Integer productId , @RequestParam("count") Integer count){
-		User user = (User) session.getAttribute(Const.CURRENT_USER);
+	public ServerResponse<CartVO> add(HttpServletRequest request , @RequestParam("productId") Integer productId , @RequestParam("count") Integer count){
+		User user = cookieUtil.checkLogin(request);
 		if (user == null){
 			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode() , ResponseCode.NEED_LOGIN.getMsg());
 		}
@@ -41,8 +45,8 @@ public class CartController {
 	}
 
 	@RequestMapping("update.do")
-	public ServerResponse<CartVO> update(HttpSession session , @RequestParam("productId") Integer productId , @RequestParam("count") Integer count){
-		User user = (User) session.getAttribute(Const.CURRENT_USER);
+	public ServerResponse<CartVO> update(HttpServletRequest request , @RequestParam("productId") Integer productId , @RequestParam("count") Integer count){
+		User user = cookieUtil.checkLogin(request);
 		if (user == null){
 			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode() , ResponseCode.NEED_LOGIN.getMsg());
 		}
@@ -50,8 +54,8 @@ public class CartController {
 	}
 
 	@RequestMapping("delete_product.do")
-	public ServerResponse<CartVO> deleteProduct(HttpSession session , @RequestParam("productIds") String productIds){
-		User user = (User) session.getAttribute(Const.CURRENT_USER);
+	public ServerResponse<CartVO> deleteProduct(HttpServletRequest request , @RequestParam("productIds") String productIds){
+		User user = cookieUtil.checkLogin(request);
 		if (user == null){
 			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode() , ResponseCode.NEED_LOGIN.getMsg());
 		}
@@ -64,8 +68,8 @@ public class CartController {
 	}
 
 	@RequestMapping("select_all.do")
-	public ServerResponse<CartVO> selectAll(HttpSession session){
-		User user = (User) session.getAttribute(Const.CURRENT_USER);
+	public ServerResponse<CartVO> selectAll(HttpServletRequest request){
+		User user = cookieUtil.checkLogin(request);
 		if (user == null){
 			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode() , ResponseCode.NEED_LOGIN.getMsg());
 		}
@@ -73,8 +77,8 @@ public class CartController {
 	}
 
 	@RequestMapping("un_select_all.do")
-	public ServerResponse<CartVO> unSelectAll(HttpSession session){
-		User user = (User) session.getAttribute(Const.CURRENT_USER);
+	public ServerResponse<CartVO> unSelectAll(HttpServletRequest request){
+		User user = cookieUtil.checkLogin(request);
 		if (user == null){
 			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode() , ResponseCode.NEED_LOGIN.getMsg());
 		}
@@ -82,8 +86,8 @@ public class CartController {
 	}
 
 	@RequestMapping("select.do")
-	public ServerResponse<CartVO> selectAll(HttpSession session , Integer productId){
-		User user = (User) session.getAttribute(Const.CURRENT_USER);
+	public ServerResponse<CartVO> selectAll(HttpServletRequest request , Integer productId){
+		User user = cookieUtil.checkLogin(request);
 		if (user == null){
 			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode() , ResponseCode.NEED_LOGIN.getMsg());
 		}
@@ -91,8 +95,8 @@ public class CartController {
 	}
 
 	@RequestMapping("un_select.do")
-	public ServerResponse<CartVO> unSelectAll(HttpSession session , Integer productId){
-		User user = (User) session.getAttribute(Const.CURRENT_USER);
+	public ServerResponse<CartVO> unSelectAll(HttpServletRequest request , Integer productId){
+		User user = cookieUtil.checkLogin(request);
 		if (user == null){
 			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode() , ResponseCode.NEED_LOGIN.getMsg());
 		}
@@ -100,8 +104,8 @@ public class CartController {
 	}
 
 	@RequestMapping("get_cart_product_count.do")
-	public ServerResponse<Integer> getCartProductCount(HttpSession session){
-		User user = (User) session.getAttribute(Const.CURRENT_USER);
+	public ServerResponse<Integer> getCartProductCount(HttpServletRequest request){
+		User user = cookieUtil.checkLogin(request);
 		if (user == null){
 			return ServerResponse.Success(0);
 		}
