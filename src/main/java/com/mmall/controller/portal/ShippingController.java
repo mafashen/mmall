@@ -7,6 +7,8 @@ import com.mmall.common.ServerResponse;
 import com.mmall.domain.Shipping;
 import com.mmall.domain.User;
 import com.mmall.service.IShippingService;
+import com.mmall.util.SessionUtil;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,10 +22,12 @@ public class ShippingController {
 
 	@Autowired
 	private IShippingService shippingService;
+	@Autowired
+	private SessionUtil sessionUtil;
 
 	@RequestMapping("add.do")
-	public ServerResponse add(HttpSession session , Shipping shipping){
-		User user = (User) session.getAttribute(Const.CURRENT_USER);
+	public ServerResponse add(HttpServletRequest request , Shipping shipping){
+		User user = sessionUtil.checkLogin(request);
 		if (user == null){
 			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode() , ResponseCode.NEED_LOGIN.getMsg());
 		}
@@ -32,8 +36,8 @@ public class ShippingController {
 
 	@RequestMapping("update.do")
 	@ResponseBody
-	public ServerResponse update(HttpSession session,Shipping shipping){
-		User user = (User)session.getAttribute(Const.CURRENT_USER);
+	public ServerResponse update(HttpServletRequest request,Shipping shipping){
+		User user = sessionUtil.checkLogin(request);
 		if(user ==null){
 			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getMsg());
 		}
@@ -41,8 +45,8 @@ public class ShippingController {
 	}
 
 	@RequestMapping("del.do")
-	public ServerResponse delete(HttpSession session , Integer shippingId){
-		User user = (User) session.getAttribute(Const.CURRENT_USER);
+	public ServerResponse delete(HttpServletRequest request , Integer shippingId){
+		User user = sessionUtil.checkLogin(request);
 		if (user == null){
 			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode() , ResponseCode.NEED_LOGIN.getMsg());
 		}
@@ -50,8 +54,8 @@ public class ShippingController {
 	}
 
 	@RequestMapping("select.do")
-	public ServerResponse<Shipping> select(HttpSession session , Integer shippingId){
-		User user = (User) session.getAttribute(Const.CURRENT_USER);
+	public ServerResponse<Shipping> select(HttpServletRequest request , Integer shippingId){
+		User user = sessionUtil.checkLogin(request);
 		if (user == null){
 			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode() , ResponseCode.NEED_LOGIN.getMsg());
 		}
@@ -62,8 +66,8 @@ public class ShippingController {
 	@ResponseBody
 	public ServerResponse<PageInfo> list(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
 										 @RequestParam(value = "pageSize",defaultValue = "10")int pageSize,
-										 HttpSession session){
-		User user = (User)session.getAttribute(Const.CURRENT_USER);
+										 HttpServletRequest request){
+		User user = sessionUtil.checkLogin(request);
 		if(user ==null){
 			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getMsg());
 		}

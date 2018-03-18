@@ -8,12 +8,12 @@ import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.domain.User;
 import com.mmall.service.IOrderService;
+import com.mmall.util.SessionUtil;
 import com.mmall.vo.OrderVO;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +29,12 @@ public class OrderController {
 
 	@Autowired
 	private IOrderService orderService;
+	@Autowired
+	private SessionUtil sessionUtil;
 
 	@RequestMapping("pay.do")
-	public ServerResponse pay(HttpSession session, Long orderNo, HttpServletRequest request){
-		User user = (User)session.getAttribute(Const.CURRENT_USER);
+	public ServerResponse pay(Long orderNo, HttpServletRequest request){
+		User user = sessionUtil.checkLogin(request);
 		if(user ==null){
 			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getMsg());
 		}
@@ -93,8 +95,8 @@ public class OrderController {
 	}
 
 	@RequestMapping("query_order_pay_status.do")
-	public ServerResponse<Boolean> QueryOrderPayStatus(Long orderNo , HttpSession session){
-		User user = (User)session.getAttribute(Const.CURRENT_USER);
+	public ServerResponse<Boolean> QueryOrderPayStatus(HttpServletRequest request , Long orderNo){
+		User user = sessionUtil.checkLogin(request);
 		if(user ==null){
 			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getMsg());
 		}
@@ -102,8 +104,8 @@ public class OrderController {
 	}
 
 	@RequestMapping("create.do")
-	public ServerResponse<OrderVO> createOrder(HttpSession session , Integer shippingId){
-		User user = (User)session.getAttribute(Const.CURRENT_USER);
+	public ServerResponse<OrderVO> createOrder(HttpServletRequest request , Integer shippingId){
+		User user = sessionUtil.checkLogin(request);
 		if(user ==null){
 			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getMsg());
 		}
@@ -111,8 +113,8 @@ public class OrderController {
 	}
 
 	@RequestMapping("cancel.do")
-	public ServerResponse<String> cancelOrder(HttpSession session , Long orderNo){
-		User user = (User)session.getAttribute(Const.CURRENT_USER);
+	public ServerResponse<String> cancelOrder(HttpServletRequest request , Long orderNo){
+		User user = sessionUtil.checkLogin(request);
 		if(user ==null){
 			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getMsg());
 		}
@@ -120,8 +122,8 @@ public class OrderController {
 	}
 
 	@RequestMapping("get_order_cart_product.do")
-	public ServerResponse getOrderCartProduct(HttpSession session){
-		User user = (User)session.getAttribute(Const.CURRENT_USER);
+	public ServerResponse getOrderCartProduct(HttpServletRequest request){
+		User user = sessionUtil.checkLogin(request);
 		if(user ==null){
 			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getMsg());
 		}
@@ -129,8 +131,8 @@ public class OrderController {
 	}
 
 	@RequestMapping("detail.do")
-	public ServerResponse getDetail(HttpSession session , Long orderNo){
-		User user = (User)session.getAttribute(Const.CURRENT_USER);
+	public ServerResponse getDetail(HttpServletRequest request , Long orderNo){
+		User user = sessionUtil.checkLogin(request);
 		if(user ==null){
 			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getMsg());
 		}
@@ -138,8 +140,8 @@ public class OrderController {
 	}
 
 	@RequestMapping("list.do")
-	public ServerResponse list(HttpSession session , @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
-		User user = (User)session.getAttribute(Const.CURRENT_USER);
+	public ServerResponse list(HttpServletRequest request , @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
+		User user = sessionUtil.checkLogin(request);
 		if(user ==null){
 			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getMsg());
 		}

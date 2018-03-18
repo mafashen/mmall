@@ -10,6 +10,7 @@ import com.mmall.domain.User;
 import com.mmall.service.IProductService;
 import com.mmall.util.FileUtil;
 import com.mmall.util.PropertiesUtil;
+import com.mmall.util.SessionUtil;
 import java.util.Map;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
@@ -31,9 +32,11 @@ public class ProductManageController {
 
 	@Autowired
 	private IProductService productService;
+	@Autowired
+	private SessionUtil sessionUtil;
 
-	private ServerResponse checkLoginAndRole(HttpSession session){
-		User user = (User) session.getAttribute(Const.CURRENT_USER);
+	private ServerResponse checkLoginAndRole(HttpServletRequest request ){
+		User user = sessionUtil.checkLogin(request);
 		if (user == null){
 			return ServerResponse.Failure(ResponseCode.NEED_LOGIN.getCode(),"请登录后操作");
 		}else if(!Objects.equals(user.getRole() , RoleEnum.ADMIN.getCode())){
@@ -44,11 +47,11 @@ public class ProductManageController {
 
 	@RequestMapping("save.do")
 	@ResponseBody
-	public ServerResponse productSave(HttpSession session, @Valid Product product , BindingResult bindingResult){
+	public ServerResponse productSave(HttpServletRequest request , @Valid Product product , BindingResult bindingResult){
 		if (bindingResult.hasErrors()){
 			return ServerResponse.Failure(bindingResult.getFieldError().toString());
 		}
-		ServerResponse loginRet = checkLoginAndRole(session);
+		ServerResponse loginRet = checkLoginAndRole(request);
 		if (!loginRet.isSuccess()){
 			return loginRet;
 		}else{
@@ -58,10 +61,10 @@ public class ProductManageController {
 
 	@RequestMapping("list.do")
 	@ResponseBody
-	public ServerResponse productList(HttpSession session,
+	public ServerResponse productList(HttpServletRequest request ,
 									  @RequestParam(value = "pageNum" , defaultValue = "1") int pageNum ,
 									  @RequestParam(value = "pageSize" , defaultValue = "10") int pageSize){
-		ServerResponse loginRet = checkLoginAndRole(session);
+		ServerResponse loginRet = checkLoginAndRole(request);
 		if (!loginRet.isSuccess()){
 			return loginRet;
 		}else{
@@ -71,12 +74,12 @@ public class ProductManageController {
 
 	@RequestMapping("search.do")
 	@ResponseBody
-	public ServerResponse productSearch(HttpSession session,
+	public ServerResponse productSearch(HttpServletRequest request ,
 									  @RequestParam("productName") String productName,
 									  @RequestParam(value = "productId" , required = false) Integer productId,
 									  @RequestParam(value = "pageNum" , defaultValue = "1") int pageNum ,
 									  @RequestParam(value = "pageSize" , defaultValue = "10") int pageSize){
-		ServerResponse loginRet = checkLoginAndRole(session);
+		ServerResponse loginRet = checkLoginAndRole(request);
 		if (!loginRet.isSuccess()){
 			return loginRet;
 		}else{
@@ -86,9 +89,9 @@ public class ProductManageController {
 
 	@RequestMapping("detail.do")
 	@ResponseBody
-	public ServerResponse productDetail(HttpSession session,
+	public ServerResponse productDetail(HttpServletRequest request ,
 										@RequestParam(value = "productId" , required = true) Integer productId){
-		ServerResponse loginRet = checkLoginAndRole(session);
+		ServerResponse loginRet = checkLoginAndRole(request);
 		if (!loginRet.isSuccess()){
 			return loginRet;
 		}else{
@@ -98,10 +101,10 @@ public class ProductManageController {
 
 	@RequestMapping("set_sale_status.do")
 	@ResponseBody
-	public ServerResponse productSetSaleStatus(HttpSession session,
+	public ServerResponse productSetSaleStatus(HttpServletRequest request ,
 										@RequestParam(value = "productId" , required = true) Integer productId,
 										@RequestParam(value = "status") Integer status){
-		ServerResponse loginRet = checkLoginAndRole(session);
+		ServerResponse loginRet = checkLoginAndRole(request);
 		if (!loginRet.isSuccess()){
 			return loginRet;
 		}else{
@@ -111,13 +114,13 @@ public class ProductManageController {
 
 	@RequestMapping("upload.do")
 	@ResponseBody
-	public ServerResponse productUpload(HttpSession session,
+	public ServerResponse productUpload(HttpServletRequest request ,
 										@RequestParam("upload_file") MultipartFile file){
-		ServerResponse loginRet = checkLoginAndRole(session);
+		ServerResponse loginRet = checkLoginAndRole(request);
 		if (!loginRet.isSuccess()){
 			return loginRet;
 		}else{
-			String path = session.getServletContext().getRealPath("upload");
+			String path = request.getServletContext().getRealPath("upload");
 			String uploadFileName = FileUtil.upload(file, path);
 			if (StringUtils.isNotBlank(uploadFileName)){
 				String url = PropertiesUtil.getProperty("ftp.server.http.prefix") + uploadFileName;
@@ -134,7 +137,9 @@ public class ProductManageController {
 
 	@RequestMapping("richtext_img_upload.do")
 	@ResponseBody
-	public Map richtextImgUpload(HttpSession session, @RequestParam(value = "upload_file",required = false) MultipartFile file, HttpServletRequest request, HttpServletResponse response) {
+	public Map richtextImgUpload(@RequestParam(value = "upload_file",required = false) MultipartFile file,
+								 HttpServletRequest request,
+								 HttpServletResponse response) {
 		//富文本中对于返回值有自己的要求,我们使用是simditor所以按照simditor的要求进行返回
 //        {
 //            "success": true/false,
@@ -142,7 +147,7 @@ public class ProductManageController {
 //            "file_path": "[real file path]"
 //        }
 		Map resultMap = Maps.newHashMap();
-		ServerResponse loginRet = checkLoginAndRole(session);
+		ServerResponse loginRet = checkLoginAndRole(request);
 		if (!loginRet.isSuccess()) {
 			resultMap.put("success",false);
 			resultMap.put("msg",loginRet.getMsg());

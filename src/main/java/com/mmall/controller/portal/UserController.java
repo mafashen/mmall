@@ -39,19 +39,14 @@ public class UserController {
 									  HttpSession session , HttpServletResponse response){
 		ServerResponse<User> ret = userService.login(username, password);
 		if (ret.isSuccess()){
-//			session.setAttribute(Const.CURRENT_USER , ret.getData());
-			sessionUtil.setLoginCookie(response , session.getId());
-			kvCacheManage.setObject(session.getId() , ret.getData() , LOGIN_EXPIRE);
+			sessionUtil.login(response , session , ret.getData());
 		}
 		return ret;
 	}
 
 	@RequestMapping("/logout.do")
 	public ServerResponse logout(HttpServletRequest request , HttpServletResponse response){
-//		session.removeAttribute(Const.CURRENT_USER);
-		String loginToken = sessionUtil.getLoginCookie(request);
-		kvCacheManage.del(loginToken);
-		sessionUtil.deleteLoginCookie(response);
+		sessionUtil.logout(request , response);
 		return ServerResponse.Success();
 	}
 
@@ -66,7 +61,6 @@ public class UserController {
 	@RequestMapping(value = "get_user_info.do")
 	@ResponseBody
 	public ServerResponse<User> getUserInfo(HttpSession session , HttpServletRequest request){
-//		User user = (User) session.getAttribute(Const.CURRENT_USER);
 		User user = sessionUtil.checkLogin(request);
 		if (user != null){
 			return ServerResponse.Success(user);
@@ -110,7 +104,7 @@ public class UserController {
 
 	@RequestMapping(value = "update_information.do",method = RequestMethod.POST)
 	@ResponseBody
-	public ServerResponse<User> update_information(HttpServletRequest request,User user){
+	public ServerResponse<User> update_information(HttpServletRequest request , User user){
 		User currentUser = sessionUtil.checkLogin(request);
 		String loginCookie = sessionUtil.getLoginCookie(request);
 		if(currentUser == null){
@@ -121,7 +115,6 @@ public class UserController {
 		ServerResponse<User> response = userService.updateInformation(user);
 		if(response.isSuccess()){
 			response.getData().setUsername(currentUser.getUsername());
-			//session.setAttribute(Const.CURRENT_USER,response.getData());
 			kvCacheManage.setObject(loginCookie , user , LOGIN_EXPIRE);
 		}
 		return response;
