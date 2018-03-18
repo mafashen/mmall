@@ -6,12 +6,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 public class SessionUtil {
 
-	@Autowired
 	private KvCacheManage kvCacheManage;
 
 	private static final String LOGIN_COOKIE_NAME = "mmall_login_cookie";
@@ -75,5 +75,10 @@ public class SessionUtil {
 				kvCacheManage.expire(loginCookie, LOGIN_CACHE_MAX_AGE);
 			}
 		}
+	}
+
+	@Autowired
+	public void setKvCacheManage(KvCacheManage kvCacheManage) {
+		this.kvCacheManage = kvCacheManage;
 	}
 }
