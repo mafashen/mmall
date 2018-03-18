@@ -1,4 +1,4 @@
-package com.mmall.controller;
+package com.mmall.controller.portal;
 
 import com.google.common.base.Splitter;
 import com.mmall.common.Const;

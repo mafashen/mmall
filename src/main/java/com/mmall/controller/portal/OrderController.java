@@ -1,4 +1,4 @@
-package com.mmall.controller;
+package com.mmall.controller.portal;
 
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
