@@ -316,33 +316,33 @@
       </plugin>
     </plugins>
 
-    <resources>
-      <resource>
-        <directory>src/main/resources.${deploy.type}</directory>
-        <excludes>
-          <exclude>*.jsp</exclude>
-        </excludes>
-      </resource>
-    </resources>
+    <!--<resources>-->
+      <!--<resource>-->
+        <!--<directory>src/main/resources.${deploy.type}</directory>-->
+        <!--<excludes>-->
+          <!--<exclude>*.jsp</exclude>-->
+        <!--</excludes>-->
+      <!--</resource>-->
+    <!--</resources>-->
   </build>
 
-  <profiles>
-    <profile>
-      <id>dev</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <properties>
-        <deploy.type>dev</deploy.type>
-      </properties>
-    </profile>
+  <!--<profiles>-->
+    <!--<profile>-->
+      <!--<id>dev</id>-->
+      <!--<activation>-->
+        <!--<activeByDefault>true</activeByDefault>-->
+      <!--</activation>-->
+      <!--<properties>-->
+        <!--<deploy.type>dev</deploy.type>-->
+      <!--</properties>-->
+    <!--</profile>-->
 
-    <profile>
-      <id>prod</id>
-      <properties>
-        <deploy.type>prod</deploy.type>
-      </properties>
-    </profile>
-  </profiles>
+    <!--<profile>-->
+      <!--<id>prod</id>-->
+      <!--<properties>-->
+        <!--<deploy.type>prod</deploy.type>-->
+      <!--</properties>-->
+    <!--</profile>-->
+  <!--</profiles>-->
 
 </project>
