@@ -112,7 +112,7 @@ public class UserController {
 	@ResponseBody
 	public ServerResponse<User> update_information(HttpServletRequest request,User user){
 		User currentUser = sessionUtil.checkLogin(request);
-		String loginCookie = CookieUtil.getLoginCookie(request);
+		String loginCookie = sessionUtil.getLoginCookie(request);
 		if(currentUser == null){
 			return ServerResponse.Failure("用户未登录");
 		}
