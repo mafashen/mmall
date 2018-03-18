@@ -66,4 +66,14 @@ public class SessionUtil {
 		}
 		return null;
 	}
+
+	public void refreshLoginExpire(HttpServletRequest request){
+		String loginCookie = getLoginCookie(request);
+		if (StringUtils.isNotBlank(loginCookie)){
+			User user = kvCacheManage.getObject(loginCookie, User.class);
+			if(user != null){
+				kvCacheManage.expire(loginCookie, LOGIN_CACHE_MAX_AGE);
+			}
+		}
+	}
 }
