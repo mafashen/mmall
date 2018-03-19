@@ -1,18 +1,22 @@
 package com.mmall.util;
 
 import com.mmall.domain.User;
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 public class SessionUtil {
 
 	@Autowired
 	private KvCacheManage kvCacheManage;
+
+	private SessionUtil sessionUtil;
 
 	private static final String LOGIN_COOKIE_NAME = "mmall_login_cookie";
 
@@ -22,6 +26,12 @@ public class SessionUtil {
 	private static final int LOGIN_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
 	private static final int LOGIN_CACHE_MAX_AGE = 30 * 60;
 
+
+	@PostConstruct
+	public void init(){
+		sessionUtil = this;
+		sessionUtil.kvCacheManage = this.kvCacheManage;
+	}
 
 	public void setLoginCookie(HttpServletResponse response , String value){
 		CookieUtil.addCookie(response , LOGIN_COOKIE_NAME , value , LOGIN_COOKIE_MAX_AGE);
@@ -75,5 +85,10 @@ public class SessionUtil {
 				kvCacheManage.expire(loginCookie, LOGIN_CACHE_MAX_AGE);
 			}
 		}
+	}
+
+	@Autowired
+	public void setKvCacheManage(KvCacheManage kvCacheManage) {
+		this.kvCacheManage = kvCacheManage;
 	}
 }
