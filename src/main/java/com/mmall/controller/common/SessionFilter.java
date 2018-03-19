@@ -10,15 +10,17 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class SessionFilter implements Filter{
 
-	@Autowired
 	private SessionUtil sessionUtil;
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-
+		ApplicationContext context = new ClassPathXmlApplicationContext("spring-context.xml");
+		sessionUtil = (SessionUtil) context.getBean("sessionUtil");
 	}
 
 	@Override
@@ -31,5 +33,14 @@ public class SessionFilter implements Filter{
 	@Override
 	public void destroy() {
 
+	}
+
+	public SessionUtil getSessionUtil() {
+		return sessionUtil;
+	}
+
+	@Autowired
+	public void setSessionUtil(SessionUtil sessionUtil) {
+		this.sessionUtil = sessionUtil;
 	}
 }
