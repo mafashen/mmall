@@ -44,7 +44,7 @@ public class OrderController {
 
 	@RequestMapping("alipay_callback.do")
 	public Object callBack(HttpServletRequest request){
-		Map<String, String> params = new LinkedHashMap<String, String>() {
+			Map<String, String> params = new LinkedHashMap<String, String>() {
 
 			@Override
 			public String put(String key, String value) {
@@ -85,6 +85,7 @@ public class OrderController {
 			}
 		} catch (AlipayApiException e) {
 			logger.error("支付宝回调验证失败:",e);
+			return ServerResponse.Failure("支付回调失败" + e.getMessage());
 		}
 
 		//TODO 其他各种业务逻辑验证

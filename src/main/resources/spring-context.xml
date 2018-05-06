@@ -2,7 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context.xsd
+                        http://www.springframework.org/schema/aop
+                        http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <context:component-scan base-package="com.mmall" >
         <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
@@ -15,4 +21,18 @@
           class="org.springframework.transaction.support.TransactionTemplate">
         <property name="transactionManager" ref="transactionManager" />
     </bean>
+
+    <aop:aspectj-autoproxy />
+
+
+    <bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration"/>
+
+    <bean class="org.springframework.session.web.http.DefaultCookieSerializer">
+        <property name="cookieMaxAge" value="360000"/>
+        <property name="cookieName" value="SESSION_NAME"/>
+        <property name="cookiePath" value="/" />
+        <property name="domainName" value="happymmall.com" />
+        <property name="useHttpOnlyCookie" value="true" />
+    </bean>
+
 </beans>
