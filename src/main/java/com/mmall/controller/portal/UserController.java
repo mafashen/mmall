@@ -4,7 +4,6 @@ import com.mmall.common.ServerResponse;
 import com.mmall.common.ResponseCode;
 import com.mmall.domain.User;
 import com.mmall.service.IUserService;
-import com.mmall.util.CookieUtil;
 import com.mmall.util.KvCacheManage;
 import com.mmall.util.SessionUtil;
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +38,7 @@ public class UserController {
 									  HttpSession session , HttpServletResponse response){
 		ServerResponse<User> ret = userService.login(username, password);
 		if (ret.isSuccess()){
+//			session.setAttribute(Const.CURRENT_USER , ret.getData());
 			sessionUtil.login(response , session , ret.getData());
 		}
 		return ret;

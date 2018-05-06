@@ -26,7 +26,7 @@ public class SessionFilter implements Filter{
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		//登录状态下,每次访问都重新设置redis session有效期
-		sessionUtil.refreshLoginExpire((HttpServletRequest) request);
+//		sessionUtil.refreshLoginExpire((HttpServletRequest) request);
 		chain.doFilter(request , response);
 	}
 

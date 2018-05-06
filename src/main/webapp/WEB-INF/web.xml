@@ -39,6 +39,18 @@
     <filter-name>sessionFilter</filter-name>
     <url-pattern>*.do</url-pattern>
   </filter-mapping>
+
+
+  <filter>
+    <filter-name>springSessionRepositoryFilter</filter-name>
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>springSessionRepositoryFilter</filter-name>
+    <url-pattern>*.do</url-pattern>
+  </filter-mapping>
+
+
   <!--<filter>-->
     <!--<filter-name>cors</filter-name>-->
     <!--<filter-class>com.mmall.util.CrossFilter</filter-class>-->
