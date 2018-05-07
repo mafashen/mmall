@@ -1,5 +1,6 @@
 package com.mmall.domain;
 
+import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -10,7 +11,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class User {
+public class User implements Serializable{
     private Integer id;
 
     @NotBlank
