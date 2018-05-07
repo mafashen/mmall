@@ -1,5 +1,6 @@
 package com.mmall.vo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +10,7 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-public class CartProductVO {
+public class CartProductVO implements Serializable{
 
 	//结合了产品和购物车的一个抽象对象
 

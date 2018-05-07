@@ -17,4 +17,6 @@ public interface ICategoryService {
 	ServerResponse<Category> selectCategoryById(Integer categoryId);
 
 	ServerResponse<Category> getFullCategory(Integer catId);
+
+	ServerResponse<List<Category>> getCategoryTree();
 }

@@ -1,11 +1,12 @@
 package com.mmall.vo;
 
+import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-public class ShippingVO {
+public class ShippingVO implements Serializable{
 
 	private String receiverName;
 

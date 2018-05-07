@@ -2,6 +2,8 @@ package com.mmall.vo;
 
 import com.mmall.common.RoleEnum;
 import com.mmall.domain.User;
+
+import java.io.Serializable;
 import jodd.bean.BeanCopy;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +13,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 @Getter
 @Setter
-public class UserVO {
+public class UserVO implements Serializable{
 
 	private String username;
 

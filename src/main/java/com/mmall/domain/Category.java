@@ -1,13 +1,16 @@
 package com.mmall.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 @Getter
 @Setter
-public class Category {
+public class Category implements Serializable{
 
     private Integer id;
 
@@ -19,8 +22,10 @@ public class Category {
 
     private Integer sortOrder;
 
+    @JsonIgnore
     private Date createTime;
 
+    @JsonIgnore
     private Date updateTime;
 
     private List<Category> children;

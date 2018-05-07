@@ -1,12 +1,13 @@
 package com.mmall.vo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class OrderItemVO {
+public class OrderItemVO implements Serializable{
 
 	private Long orderNo;
 

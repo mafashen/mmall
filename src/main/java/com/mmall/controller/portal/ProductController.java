@@ -39,6 +39,6 @@ public class ProductController {
 
 	@RequestMapping("get_all_category.do")
 	public ServerResponse getAllCategory(){
-		return categoryService.getChildrenParallelCategory(0);
+		return categoryService.getCategoryTree();
 	}
 }

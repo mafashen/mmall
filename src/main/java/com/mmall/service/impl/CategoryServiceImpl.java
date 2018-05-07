@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -129,5 +131,17 @@ public class CategoryServiceImpl implements ICategoryService {
 				findChildCat(child);
 			}
 		}
+	}
+
+	@Override
+	public ServerResponse<List<Category>> getCategoryTree(){
+		List<Category> firstCats = categoryMapper.getChildren(0);
+		if (CollectionUtils.isNotEmpty(firstCats)){
+			for (Category firstCat : firstCats) {
+				List<Category> children = categoryMapper.getChildren(firstCat.getId());
+				firstCat.setChildren(children);
+			}
+		}
+		return ServerResponse.Success(firstCats);
 	}
 }
