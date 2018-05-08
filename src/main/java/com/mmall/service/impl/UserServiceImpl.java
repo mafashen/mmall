@@ -7,6 +7,7 @@ import com.mmall.common.TokenCache;
 import com.mmall.dao.UserMapper;
 import com.mmall.domain.User;
 import com.mmall.service.IUserService;
+import com.mmall.util.KvCacheManage;
 import com.mmall.util.MD5Util;
 import java.util.Objects;
 import java.util.UUID;
@@ -23,6 +24,8 @@ public class UserServiceImpl implements IUserService {
 	private UserMapper userMapper;
 	@Autowired
 	private TokenCache tokenCache;
+	@Autowired
+	private KvCacheManage kvCacheManage;
 
 	@Override
 	public ServerResponse<User> login(String username, String password) {
@@ -75,7 +78,8 @@ public class UserServiceImpl implements IUserService {
 		if (right){
 			//设置一个token，重置密码时检验token，防止越权
 			String forgetToken = UUID.randomUUID().toString();
-			tokenCache.setCache(TOKEN_CACHE_PREFIX+username , forgetToken);
+//			tokenCache.setCache(TOKEN_CACHE_PREFIX+username , forgetToken);
+			kvCacheManage.setObject(TOKEN_CACHE_PREFIX+username  , forgetToken , 30*1000);
 			return ServerResponse.Success(forgetToken);
 		}
 		return ServerResponse.Failure("答案错误！");
@@ -89,7 +93,8 @@ public class UserServiceImpl implements IUserService {
 		if (!userMapper.checkNameExist(username)){
 			return ServerResponse.Failure("用户名不存在");
 		}
-		String cacheToken = tokenCache.getCache(TOKEN_CACHE_PREFIX + username);
+//		String cacheToken = tokenCache.getCache(TOKEN_CACHE_PREFIX + username);
+		String cacheToken = kvCacheManage.getString(TOKEN_CACHE_PREFIX+username );
 		if (StringUtils.isBlank(cacheToken)){
 			return ServerResponse.Failure("token无效");
 		}
