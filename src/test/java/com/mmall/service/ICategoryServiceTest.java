@@ -1,5 +1,7 @@
 package com.mmall.service;
 
+import java.util.List;
+
 import com.mmall.common.ServerResponse;
 import com.mmall.domain.Category;
 import org.junit.Assert;
@@ -51,4 +53,11 @@ public class ICategoryServiceTest extends BaseTest{
 		System.out.println(ret.getData());
 	}
 
+	@Test
+	public void testGetCategoryTree(){
+		ServerResponse<List<Category>> categoryTree = categoryService.getCategoryTree();
+		Assert.assertTrue(categoryTree.isSuccess());
+		Assert.assertNotNull(categoryTree.getData());
+		Assert.assertNotNull(categoryTree.getData().get(0).getChildren());
+	}
 }
