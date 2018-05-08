@@ -94,7 +94,7 @@ public class UserServiceImpl implements IUserService {
 			return ServerResponse.Failure("用户名不存在");
 		}
 //		String cacheToken = tokenCache.getCache(TOKEN_CACHE_PREFIX + username);
-		String cacheToken = kvCacheManage.getString(TOKEN_CACHE_PREFIX+username );
+		String cacheToken = kvCacheManage.getObject(TOKEN_CACHE_PREFIX+username,String.class);
 		if (StringUtils.isBlank(cacheToken)){
 			return ServerResponse.Failure("token无效");
 		}
