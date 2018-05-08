@@ -75,7 +75,7 @@ public class CartServiceImpl implements ICartService {
 
 	@Override
 	public ServerResponse<CartVO> selectOrUnSelect(Integer userId, Integer productId, Integer checked) {
-		if (userId == null || productId == null || checked == null){
+		if (userId == null || checked == null){
 			return ServerResponse.Failure(ResponseCode.PARAM_ERROR.getCode() , ResponseCode.PARAM_ERROR.getMsg());
 		}
 		cartMapper.setChecked(userId , productId , checked);
